@@ -1,16 +1,7 @@
-const express = require('express')
-const router = express.Router()
+let routes = require('./routes');
+let apis = require('./apis')
 
-const productController = require('../controllers/productController.js')
-const cartController = require('../controllers/cartController.js')
-
-// home page
-router.get('/', (req, res) => res.render('index', { title: 'Express' }));
-
-
-router.get('/products', productController.getProducts)
-
-router.get('/cart', cartController.getCart)
-
-// 匯出路由器
-module.exports = router
+module.exports = (app) => {
+  app.use('/', routes);
+  app.use('/api', apis)
+}
