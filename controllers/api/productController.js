@@ -1,4 +1,4 @@
-const db = require('../models')
+const db = require('../../models')
 const Product = db.Product
 const pageLimit = 3;
 
@@ -9,7 +9,7 @@ const productController = {
       offset = (req.query.page - 1) * pageLimit
     }
     Product.findAndCountAll({
-      raw: true, 
+      raw: true,
       nest: true,
       offset: offset,
       limit: pageLimit
@@ -23,7 +23,8 @@ const productController = {
       //if page + 1 > pages, then it is pages, otherwise it's page +1
       const next = page + 1 > pages ? pages : page + 1
 
-      return res.render('products', { products: result, totalPage, prev, next})
+      return res.json({ products: result, totalPage, prev, next })
+      // ('products', { products: result, totalPage, prev, next })
     })
   },
 }

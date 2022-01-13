@@ -7,8 +7,8 @@ const cartController = require('../controllers/cartController.js')
 // home page
 router.get('/', (req, res) => res.redirect('/products'));
 
-
 router.get('/products', productController.getProducts)
+
 
 router.get('/cart', cartController.getCart)
 
