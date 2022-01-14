@@ -5,13 +5,19 @@ const bcrypt = require('bcryptjs')
 const bodyParser = require('body-parser')
 const handlebars = require('express-handlebars')
 const methodOverride = require('method-override')
-
+const session = require('express-session')
 
 
 const PORT = 3000
 
 app.engine('handlebars', handlebars.engine({ helpers: require('./config/handlebars-helpers')}))
 app.set('view engine', 'handlebars') // 設定使用 Handlebars 做為樣板引擎
+
+app.use(session({
+  secret: 'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true
+}))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
