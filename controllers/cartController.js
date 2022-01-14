@@ -11,6 +11,76 @@ const cartController = {
       return res.render('cart', { cart, totalPrice })
     })
   },
+  postCart: (req, res) => {
+    return Cart.findOrCreate({
+      where: {
+        id: req.session.cartId || 0,
+      },
+    }).then((cart) => {
+      console.log(Object.keys(cart[1]))
+      let [carts, create] = [cart[0], cart[1]]
+      if (create) {
+        CartItem.findAndCountAll({
+          where: {
+            CartId: carts.dataValues.id,
+            ProductId: req.body.productId
+          }
+        }).then(cartItems => {
+          if (cartItems.count === 0) {
+            CartItem.create({
+              CartId: carts.dataValues.id,
+              ProductId: req.body.productId,
+              quantity: 1,
+
+            }).catch(error => {
+              console.log(error)
+            })
+          }
+          req.session.cartId = carts.dataValues.id
+          console.log(req.session.cartId) //checkout
+          return req.session.save(() => {
+            return res.redirect('back')
+          })
+        })
+
+      } else {
+        CartItem.findOne({
+          where: {
+            CartId: carts.dataValues.id,
+            ProductId: req.body.productId
+          }
+        }).then(cartupdate => {
+          if (cartupdate) {
+            cartupdate.update({
+              quantity: cartupdate.dataValues.quantity + 1,
+            }).then(newcart => {
+              req.session.cartId = carts.dataValues.id
+              return req.session.save(() => {
+                return res.redirect('back')
+              })
+            }).catch(error => {
+              console.log(error)
+            })
+          } else {
+            CartItem.create({
+              CartId: carts.dataValues.id,
+              ProductId: req.body.productId,
+              quantity: 1,
+            }).then(newcart => {
+              req.session.cartId = carts.dataValues.id
+              return req.session.save(() => {
+                return res.redirect('back')
+              })
+            }).catch(error => {
+              console.log(error)
+            })
+          }
+
+        })
+      }
+
+    });
+  },
 }
 
 module.exports = cartController

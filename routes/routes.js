@@ -9,8 +9,8 @@ router.get('/', (req, res) => res.redirect('/products'));
 
 router.get('/products', productController.getProducts)
 
-
 router.get('/cart', cartController.getCart)
+router.post('/cart', cartController.postCart)
 
 // 匯出路由器
 module.exports = router

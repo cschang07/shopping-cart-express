@@ -11,6 +11,7 @@ const cartController = {
       return res.json({ cart, totalPrice })
     })
   }, //will be rewrite with express-session middleware soon
+  
 }
 
 module.exports = cartController
