@@ -6,7 +6,8 @@ const PAGE_OFFSET = 0;
 
 const cartController = {
   getCart: (req, res) => {
-    return Cart.findOne({ include: 'items' }).then(cart => {
+    return Cart.findByPk(req.session.cartId, { include: 'items' }).then(cart => {
+      cart = cart || { items: [] }
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
       return res.render('cart', { cart, totalPrice })
     })
@@ -17,7 +18,6 @@ const cartController = {
         id: req.session.cartId || 0,
       },
     }).then((cart) => {
-      console.log(Object.keys(cart[1]))
       let [carts, create] = [cart[0], cart[1]]
       if (create) {
         CartItem.findAndCountAll({
@@ -49,11 +49,11 @@ const cartController = {
             CartId: carts.dataValues.id,
             ProductId: req.body.productId
           }
-        }).then(cartupdate => {
-          if (cartupdate) {
-            cartupdate.update({
-              quantity: cartupdate.dataValues.quantity + 1,
-            }).then(newcart => {
+        }).then(cartUpdate => {
+          if (cartUpdate) {
+            cartUpdate.update({
+              quantity: cartUpdate.dataValues.quantity + 1,
+            }).then(newCart => {
               req.session.cartId = carts.dataValues.id
               return req.session.save(() => {
                 return res.redirect('back')
@@ -66,8 +66,9 @@ const cartController = {
               CartId: carts.dataValues.id,
               ProductId: req.body.productId,
               quantity: 1,
-            }).then(newcart => {
+            }).then(newCart => {
               req.session.cartId = carts.dataValues.id
+
               return req.session.save(() => {
                 return res.redirect('back')
               })
