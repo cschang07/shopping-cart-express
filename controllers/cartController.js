@@ -14,72 +14,31 @@ const cartController = {
   },
   postCart: (req, res) => {
     return Cart.findOrCreate({
+      //check if a cart already exists in req.session. Set it to 0 if it doesn't.
       where: {
         id: req.session.cartId || 0,
       },
-    }).then((cart) => {
-      let [carts, create] = [cart[0], cart[1]]
-      if (create) {
-        CartItem.findAndCountAll({
-          where: {
-            CartId: carts.dataValues.id,
-            ProductId: req.body.productId
-          }
-        }).then(cartItems => {
-          if (cartItems.count === 0) {
-            CartItem.create({
-              CartId: carts.dataValues.id,
-              ProductId: req.body.productId,
-              quantity: 1,
-
-            }).catch(error => {
-              console.log(error)
-            })
-          }
-          req.session.cartId = carts.dataValues.id
-          console.log(req.session.cartId) //checkout
-          return req.session.save(() => {
-            return res.redirect('back')
-          })
+    }).then(cart => {
+      //check if the product we want to add is already in the cart, create one if it isn't. 
+      return CartItem.findOrCreate({
+        where: {
+          CartId: cart[0].dataValues.id,
+          ProductId: req.body.productId
+        },
+        default: {
+          CartId: cart[0].dataValues.id,
+          ProductId: req.body.productId,
+        }
+      }).then(cartItem => {
+        //Increase quantity by 1
+        cartItem[0].update({ quantity: (cartItem[0].dataValues.quantity || 0) + 1})
+      }).then(() => {
+        //save req.session
+        req.session.cartId = cart[0].dataValues.id
+        return req.session.save(() => {
+          return res.redirect('back')
         })
-
-      } else {
-        CartItem.findOne({
-          where: {
-            CartId: carts.dataValues.id,
-            ProductId: req.body.productId
-          }
-        }).then(cartUpdate => {
-          if (cartUpdate) {
-            cartUpdate.update({
-              quantity: cartUpdate.dataValues.quantity + 1,
-            }).then(newCart => {
-              req.session.cartId = carts.dataValues.id
-              return req.session.save(() => {
-                return res.redirect('back')
-              })
-            }).catch(error => {
-              console.log(error)
-            })
-          } else {
-            CartItem.create({
-              CartId: carts.dataValues.id,
-              ProductId: req.body.productId,
-              quantity: 1,
-            }).then(newCart => {
-              req.session.cartId = carts.dataValues.id
-
-              return req.session.save(() => {
-                return res.redirect('back')
-              })
-            }).catch(error => {
-              console.log(error)
-            })
-          }
-
-        })
-      }
-
+      }).catch(err => console.log(err))
     });
   },
 }
