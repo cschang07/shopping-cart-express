@@ -9,7 +9,7 @@ const cartController = {
     return Cart.findByPk(req.session.cartId, { include: 'items' }).then(cart => {
       cart = cart || { items: [] }
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
-      return res.render('cart', { cart, totalPrice })
+      return res.render('cart', { cart: cart.toJSON(), totalPrice })
     })
   },
   postCart: (req, res) => {
@@ -41,6 +41,34 @@ const cartController = {
       }).catch(err => console.log(err))
     });
   },
+  addCartItem: (req, res) => {
+    CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.update({
+        quantity: cartItem.quantity + 1,
+      })
+        .then((cartItem) => {
+          return res.redirect('back')
+        })
+    })
+  },
+  subCartItem: (req, res) => {
+    CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.update({
+        quantity: cartItem.quantity - 1 >= 1 ? cartItem.quantity - 1 : 1,
+      })
+        .then((cartItem) => {
+          return res.redirect('back')
+        })
+    })
+  },
+  deleteCartItem: (req, res) => {
+    CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.destroy()
+        .then((cartItem) => {
+          return res.redirect('back')
+        })
+    })
+  }
 }
 
 module.exports = cartController

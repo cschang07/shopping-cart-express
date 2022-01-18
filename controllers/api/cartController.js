@@ -42,6 +42,34 @@ const cartController = {
       }).catch(err => console.log(err))
     });
   },
+  addCartItem: (req, res) => {
+    CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.update({
+        quantity: cartItem.quantity + 1,
+      })
+        .then((cartItem) => {
+          return res.json({ status: 'success', message: ' quantity of product + 1 successfully.' })
+        })
+    })
+  },
+  subCartItem: (req, res) => {
+    CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.update({
+        quantity: cartItem.quantity - 1 >= 1 ? cartItem.quantity - 1 : 1,
+      })
+        .then((cartItem) => {
+          return res.json({ status: 'success', message: ' quantity of product - 1 successfully.' })
+        })
+    })
+  },
+  deleteCartItem: (req, res) => {
+    CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.destroy()
+        .then((cartItem) => {
+          return res.json({ status: 'success', message: ' product deleted from cart successfully.' })
+        })
+    })
+  }
 }
 
 module.exports = cartController
