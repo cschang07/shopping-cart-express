@@ -24,7 +24,6 @@ const productController = {
       const next = page + 1 > pages ? pages : page + 1
 
       return res.json({ products: result, totalPage, prev, next })
-      // ('products', { products: result, totalPage, prev, next })
     })
   },
 }

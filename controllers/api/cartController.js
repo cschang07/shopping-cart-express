@@ -6,7 +6,8 @@ const CartItem = db.CartItem
 
 const cartController = {
   getCart: (req, res) => {
-    return Cart.findOne({ include: 'items' }).then(cart => {
+    return Cart.findByPk(req.session.cartId, { include: 'items' }).then(cart => {
+      cart = cart || { items: [] }
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
       return res.json({ cart, totalPrice })
     })
@@ -35,7 +36,8 @@ const cartController = {
         //save req.session
         req.session.cartId = cart[0].dataValues.id
         return req.session.save(() => {
-          return res.json(cart[0])
+          // return res.json(cart[0])
+          return res.json({ status: 'success', message: ' product added to cart successfully.' })
         })
       }).catch(err => console.log(err))
     });
