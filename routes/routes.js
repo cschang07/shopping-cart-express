@@ -17,6 +17,8 @@ router.post('/cartItem/:id/sub', cartController.subCartItem)
 router.delete('/cartItem/:id', cartController.deleteCartItem)
 
 router.get('/orders', orderController.getOrders)
+router.post('/order', orderController.postOrder)
+router.post('/orders/:id/cancel', orderController.cancelOrder)
 
 // 匯出路由器
 module.exports = router
