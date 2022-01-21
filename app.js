@@ -6,9 +6,12 @@ const bodyParser = require('body-parser')
 const handlebars = require('express-handlebars')
 const methodOverride = require('method-override')
 const session = require('express-session')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 
 
-const PORT = 3000
+const port = process.env.PORT || 3000
 
 app.engine('handlebars', handlebars.engine({ helpers: require('./config/handlebars-helpers')}))
 app.set('view engine', 'handlebars') // 設定使用 Handlebars 做為樣板引擎
