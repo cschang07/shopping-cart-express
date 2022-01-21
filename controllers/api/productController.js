@@ -26,6 +26,12 @@ const productController = {
       return res.json({ products: result, totalPage, prev, next })
     })
   },
+  getProduct: (req, res) => {
+    return Product.findByPk(req.params.id)
+      .then(product => {
+        return res.json(product.dataValues)
+      })
+  }
 }
 
 module.exports = productController

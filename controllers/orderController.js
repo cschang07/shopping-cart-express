@@ -5,7 +5,8 @@ const OrderItem = db.OrderItem
 
 let orderController = {
   getOrders: (req, res) => {
-    Order.findAll({ include: 'items' }).then(orders => {
+    Order.findAll({ raw:true, include: 'items' }).then(orders => {
+      console.log(orders)
       return res.render('orders', {
         orders
       })

@@ -2,16 +2,18 @@ const db = require('../../models')
 const Cart = db.Cart
 const Order = db.Order
 const OrderItem = db.OrderItem
+const Product = db.Product
 
 
 let orderController = {
   getOrders: (req, res) => {
-    Order.findAll({ include: 'items' }).then(orders => {
+    Order.findAll({ include: {model: Product, as: 'items'} }).then(orders => {
       return res.json({ orders })
     })
   },
   postOrder: (req, res) => {
     return Cart.findByPk(req.body.cartId, { include: 'items' }).then(cart => {
+      console.log(cart)
       return Order.create({
         name: req.body.name,
         address: req.body.address,

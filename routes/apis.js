@@ -5,6 +5,7 @@ const orderController = require('../controllers/api/orderController.js')
 const productController = require('../controllers/api/productController')
 
 router.get('/products', productController.getProducts)
+router.get('/product/:id', productController.getProduct)
 
 router.get('/cart', cartController.getCart)
 
