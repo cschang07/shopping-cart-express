@@ -10,8 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-
-const port = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000
 
 app.engine('handlebars', handlebars.engine({ helpers: require('./config/handlebars-helpers')}))
 app.set('view engine', 'handlebars') // 設定使用 Handlebars 做為樣板引擎
