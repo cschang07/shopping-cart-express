@@ -9,6 +9,7 @@ const session = require('express-session')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+const passport = require('./config/passport')
 
 const PORT = process.env.PORT || 3000
 
@@ -26,6 +27,10 @@ app.use(bodyParser.json())
 
 // app.use(express.urlencoded({ defaultLayout: 'main', extended: true }))
 app.use(methodOverride('_method'))
+
+//setup passport
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 

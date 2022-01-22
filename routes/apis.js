@@ -4,6 +4,18 @@ const cartController = require('../controllers/api/cartController')
 const orderController = require('../controllers/api/orderController.js')
 const productController = require('../controllers/api/productController')
 const userController = require('../controllers/api/userController.js')
+const passport = require("../config/passport");
+
+const authenticated = passport.authenticate('jwt', { session: false })
+
+const authenticatedAdmin = (req, res, next) => {
+  if (req.user) {
+    if (req.user.isAdmin) { return next() }
+    return res.json({ status: 'error', message: 'permission denied' })
+  } else {
+    return res.json({ status: 'error', message: 'permission denied' })
+  }
+}
 
 router.get('/products', productController.getProducts)
 router.get('/product/:id', productController.getProduct)
