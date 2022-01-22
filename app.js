@@ -16,7 +16,7 @@ app.engine('handlebars', handlebars.engine({ helpers: require('./config/handleba
 app.set('view engine', 'handlebars') // 設定使用 Handlebars 做為樣板引擎
 
 app.use(session({
-  secret: 'ThisIsMySecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))

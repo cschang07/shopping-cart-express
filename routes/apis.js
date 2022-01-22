@@ -3,6 +3,7 @@ const router = express.Router()
 const cartController = require('../controllers/api/cartController')
 const orderController = require('../controllers/api/orderController.js')
 const productController = require('../controllers/api/productController')
+const userController = require('../controllers/api/userController.js')
 
 router.get('/products', productController.getProducts)
 router.get('/product/:id', productController.getProduct)
@@ -17,5 +18,7 @@ router.delete('/cartItem/:id', cartController.deleteCartItem)
 router.get('/orders', orderController.getOrders)
 router.post('/order', orderController.postOrder)
 router.post('/orders/:id/cancel', orderController.cancelOrder)
+
+router.post('/signin', userController.signIn)
 
 module.exports = router
