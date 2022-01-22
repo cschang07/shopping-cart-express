@@ -32,5 +32,6 @@ router.post('/order', orderController.postOrder)
 router.post('/orders/:id/cancel', orderController.cancelOrder)
 
 router.post('/signin', userController.signIn)
+router.post('/signup', userController.signUp)
 
 module.exports = router
