@@ -2,9 +2,9 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const bcrypt = require('bcryptjs')
-const cors = require('cors') //
 const bodyParser = require('body-parser')
 const handlebars = require('express-handlebars')
 const methodOverride = require('method-override')
@@ -12,6 +12,9 @@ const session = require('express-session')
 const passport = require('./config/passport')
 
 const PORT = process.env.PORT || 3000
+
+//cors
+app.use(cors())
 
 app.engine('handlebars', handlebars.engine({ helpers: require('./config/handlebars-helpers')}))
 app.set('view engine', 'handlebars') // 設定使用 Handlebars 做為樣板引擎
@@ -21,8 +24,6 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
-//cors
-app.use(cors())
 //bodyParser
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
