@@ -1,6 +1,6 @@
 const db = require('../../models')
 const Product = db.Product
-const pageLimit = 3;
+const pageLimit = 10;
 
 const productController = {
   getProducts: (req, res) => {
