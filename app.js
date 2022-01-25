@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000
 const app = express()
 
 app.engine('handlebars', handlebars.engine({ helpers: require('./config/handlebars-helpers') }))
-app.set('view engine', 'handlebars') // 設定使用 Handlebars 做為樣板引擎
+app.set('view engine', 'handlebars')
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -46,13 +46,13 @@ app.use(passport.session())
 //   // Pass to next layer of middleware
 //   next();
 // });
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://mingmoth.github.io/shop-forum')
-  res.header('Access-Control-Allow-Credentials', true)
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json')
-  next()
-})
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', 'https://mingmoth.github.io/shop-forum')
+//   res.header('Access-Control-Allow-Credentials', true)
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+//   res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json')
+//   next()
+// })
 
 require('./routes')(app) // 0111
 
