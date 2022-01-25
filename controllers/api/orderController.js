@@ -53,6 +53,22 @@ let orderController = {
       })
     })
   },
+  getPayment: (req, res) => {
+    console.log('===== getPayment =====')
+    console.log(req.params.id)
+    console.log('==========')
+
+    return Order.findByPk(req.params.id, {}).then(order => {
+      return res.json({ order })
+    })
+  },
+  newebpayCallback: (req, res) => {
+    console.log('===== newebpayCallback =====')
+    console.log(req.body)
+    console.log('==========')
+
+    return res.json({ status: 'success', message: '' })
+  }
 }
 
 module.exports = orderController 
