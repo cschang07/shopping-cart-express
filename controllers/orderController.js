@@ -2,6 +2,7 @@ const db = require('../models')
 const Cart = db.Cart
 const Order = db.Order
 const OrderItem = db.OrderItem
+const ngrok = require('ngrok')
 
 let orderController = {
   getOrders: (req, res) => {
