@@ -2,17 +2,18 @@ const db = require('../models')
 const Cart = db.Cart
 const Order = db.Order
 const OrderItem = db.OrderItem
+const Product = db.Product
 // for GET /order/:id/payment
 const ngrok = require('ngrok')
 const crypto = require("crypto")
 const nodemailer = require('nodemailer')
-const URL = ngrok.connect(3000)
+const URL = 'https://92f1-2401-e180-88f0-5313-c596-573-1dd5-8db1.ngrok.io'
 const MerchantID = process.env.MERCHANT_ID
 const HashKey = process.env.HASHKEY
 const HashIV = process.env.HASHIV
-const PayGateWay = "https://ccore.spgateway.com/MPG/mpg_gateway"
-const ReturnURL = URL + "/spgateway/callback?from=ReturnURL"
-const NotifyURL = URL + "/spgateway/callback?from=NotifyURL"
+const PayGateWay = "https://ccore.newebpay.com/MPG/mpg_gateway"
+const ReturnURL = URL + "/newebpay/callback?from=ReturnURL"
+const NotifyURL = URL + "/newebpay/callback?from=NotifyURL"
 const ClientBackURL = URL + "/orders"
 
 function genDataChain(TradeInfo) {
@@ -47,7 +48,7 @@ function getTradeInfo(Amt, Desc, email) {
     'MerchantID': MerchantID, // 商店代號
     'RespondType': 'JSON', // 回傳格式
     'TimeStamp': Date.now(), // 時間戳記
-    'Version': 1.5, // 串接程式版本
+    'Version': 2.0, // 串接程式版本
     'MerchantOrderNo': Date.now(), // 商店訂單編號
     'LoginType': 0, // 智付通會員
     'OrderComment': 'OrderComment', // 商店備註
@@ -74,7 +75,7 @@ function getTradeInfo(Amt, Desc, email) {
     'MerchantID': MerchantID, // 商店代號
     'TradeInfo': mpg_aes_encrypt, // 加密後參數
     'TradeSha': mpg_sha_encrypt,
-    'Version': 1.5, // 串接程式版本
+    'Version': 2.0, // 串接程式版本
     'PayGateWay': PayGateWay,
     'MerchantOrderNo': data.MerchantOrderNo,
   }
@@ -87,7 +88,7 @@ function getTradeInfo(Amt, Desc, email) {
 
 let orderController = {
   getOrders: (req, res) => {
-    Order.findAll({ raw:true, include: 'items' }).then(orders => {
+    Order.findAll({ raw: true, nest: true, include: [{ model: Product, as: "items" }] }).then(orders => {
       console.log(orders)
       return res.render('orders', {
         orders
@@ -140,8 +141,17 @@ let orderController = {
     console.log(req.params.id)
     console.log('==========')
 
-    const tradeInfo = getTradeInfo(order.amount, '產品名稱', 'v123582@gmail.com')
-    return res.render('payment', { order, tradeInfo })
+    return Order.findByPk(req.params.id).then(order => {
+      console.log(req.body) //
+      const tradeInfo = getTradeInfo(order.amount, '產品名稱', 'manutdsfan@gmail.com')
+      order.update({
+        ...req.body,
+        serial_number: tradeInfo.MerchantOrderNo,
+      })
+      .then(order => {
+        res.render('payment', { order, tradeInfo })
+      })
+    })
   },
   newebpayCallback: (req, res) => {
     console.log('===== newebpayCallback =====')
@@ -150,7 +160,23 @@ let orderController = {
     console.log(req.body)
     console.log('==========')
 
-    return res.redirect('/orders')
+    console.log('===== newebpayCallback: TradeInfo =====')
+    console.log(req.body.TradeInfo)
+
+
+    const data = JSON.parse(create_mpg_aes_decrypt(req.body.TradeInfo))
+
+    console.log('===== newebpayCallback: create_mpg_aes_decrypt、data =====')
+    console.log(data)
+
+    return Order.findAll({ where: { serial_number: data['Result']['MerchantOrderNo'] } }).then(orders => {
+      orders[0].update({
+        ...req.body,
+        payment_status: 1,
+      }).then(order => {
+        return res.redirect('/orders')
+      })
+    })
   }
 }
 

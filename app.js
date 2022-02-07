@@ -7,23 +7,49 @@ const express = require('express')
 const handlebars = require('express-handlebars')
 const methodOverride = require('method-override')
 const passport = require('./config/passport')
+const path = require('path');
 const session = require('express-session')
 
 const PORT = process.env.PORT || 3000
 
 const app = express()
 
-app.engine('handlebars', handlebars.engine({ helpers: require('./config/handlebars-helpers') }))
-app.set('view engine', 'handlebars')
+// app.engine('handlebars', handlebars.engine({ helpers: require('./config/handlebars-helpers') }))
+// app.set('view engine', 'handlebars')
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+// view engine setup
+app.engine('.hbs', handlebars({
+  extname: '.hbs',
+  defaultLayout: 'main',
+  helpers: require('./config/handlebars-helpers')
+}));
+
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true
-}))
+if (process.env.NODE_ENV === 'production') {
+  app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    proxy: true, // Required for Heroku & Digital Ocean (regarding X-Forwarded-For)
+    name: 'MyCoolWebAppCookieName', // This needs to be unique per-host.
+    cookie: {
+      secure: true, // required for cookies to work on HTTPS
+      httpOnly: false,
+      sameSite: 'none'
+    }
+  }))
+} else {
+  app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  }))
+}
 app.use(methodOverride('_method'))
 app.use(passport.initialize())
 app.use(passport.session())
