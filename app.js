@@ -30,26 +30,16 @@ app.engine('.hbs', handlebars({
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-if (process.env.NODE_ENV === 'production') {
-  app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    // proxy: true, // Required for Heroku & Digital Ocean (regarding X-Forwarded-For)
-    // name: 'MyCoolWebAppCookieName', // This needs to be unique per-host.
-    // cookie: {
-    //   secure: true, // required for cookies to work on HTTPS
-    //   httpOnly: false,
-    //   sameSite: 'none'
-    // }
-  }))
-} else {
-  app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-  }))
-}
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  // proxy: true, // Required for Heroku & Digital Ocean (regarding X-Forwarded-For)
+  // name: 'MyCoolWebAppCookieName', // This needs to be unique per-host.
+  cookie: {
+    httpOnly: false
+  }
+}))
 app.use(methodOverride('_method'))
 app.use(passport.initialize())
 app.use(passport.session())
