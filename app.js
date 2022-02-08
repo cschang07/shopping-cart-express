@@ -34,11 +34,11 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  // proxy: true, // Required for Heroku & Digital Ocean (regarding X-Forwarded-For)
+  proxy: true, // Required for Heroku & Digital Ocean (regarding X-Forwarded-For)
   // name: 'MyCoolWebAppCookieName', // This needs to be unique per-host.
-  cookie: {
-    httpOnly: false
-  }
+  // cookie: {
+  //   httpOnly: false
+  // }
 }))
 app.use(methodOverride('_method'))
 app.use(passport.initialize())
