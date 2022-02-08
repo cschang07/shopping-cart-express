@@ -20,6 +20,7 @@ const cartController = {
       },
     }).then(cart => {
       //check if the product we want to add is already in the cart, create one if it isn't. 
+      console.log(req.session.cartId)
       return CartItem.findOrCreate({
         where: {
           CartId: cart[0].dataValues.id,
