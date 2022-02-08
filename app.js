@@ -10,7 +10,7 @@ const passport = require('./config/passport')
 const path = require('path');
 const session = require('express-session')
 
-const PORT = process.env.PORT || 3000
+// const PORT = process.env.PORT || 3000
 
 const app = express()
 
