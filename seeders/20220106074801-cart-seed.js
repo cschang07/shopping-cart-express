@@ -2,8 +2,9 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const mockCart = Array.from({ length: 3 }).map((item, index) => ({
+    const mockCart = Array.from({ length: 5 }).map((item, index) => ({
       id: index + 1,
+      UserId: index + 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
