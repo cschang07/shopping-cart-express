@@ -26,7 +26,7 @@ passport.serializeUser((user, cb) => {
 })
 passport.deserializeUser((id, cb) => {
   User.findByPk(id, {
-    include: [db.Order, db.Cart]
+    include: db.Order
   }).then((user) => {
     console.log(user) // 暫時添加
     user = user.toJSON();
