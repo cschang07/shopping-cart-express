@@ -20,21 +20,21 @@ const authenticatedAdmin = (req, res, next) => {
 router.get('/products', productController.getProducts)
 router.get('/product/:id', productController.getProduct)
 
-router.get('/cart', cartController.getCart)
+router.get('/cart', authenticated, cartController.getCart)
 
-router.post('/cartItem', cartController.postCart)
-router.post('/cartItem/:id/add', cartController.addCartItem)
-router.post('/cartItem/:id/sub', cartController.subCartItem)
-router.delete('/cartItem/:id', cartController.deleteCartItem)
+router.post('/cartItem', authenticated, cartController.postCart)
+router.post('/cartItem/:id/add', authenticated, cartController.addCartItem)
+router.post('/cartItem/:id/sub', authenticated, cartController.subCartItem)
+router.delete('/cartItem/:id', authenticated, cartController.deleteCartItem)
 
-router.get('/orders', orderController.getOrders)
-router.post('/order', orderController.postOrder)
-router.post('/orders/:id/cancel', orderController.cancelOrder)
+router.get('/orders', authenticated, orderController.getOrders)
+router.post('/order', authenticated, orderController.postOrder)
+router.post('/orders/:id/cancel', authenticated, orderController.cancelOrder)
 
 router.post('/signin', userController.signIn)
 router.post('/signup', userController.signUp)
 
-router.get('/order/:id/payment', orderController.getPayment)
-router.post('/newebpay/callback', orderController.newebpayCallback)
+router.get('/order/:id/payment', authenticated, orderController.getPayment)
+router.post('/newebpay/callback', authenticated, orderController.newebpayCallback)
 
 module.exports = router
