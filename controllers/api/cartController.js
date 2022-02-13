@@ -7,7 +7,7 @@ const User = db.User
 
 const cartController = {
   getCart: (req, res) => {
-    return Cart.findByPk(req.body.idToFindCart, { include: 'items' }).then(cart => {
+    return Cart.findByPk(req.user.id, { include: 'items' }).then(cart => {
       cart = cart || { items: [] }
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
       return res.json({ cart, totalPrice })
@@ -17,7 +17,7 @@ const cartController = {
     return Cart.findOrCreate({
       //check if a cart already exists in req.session. Set it to 0 if it doesn't.
       where: {
-        id: req.body.idToFindCart || 0, //請前端夥伴做一個form contains "idToFindCart" which is user's id
+        id: req.user.id || 0, //請前端夥伴做一個form contains "idToFindCart" which is user's id
       },
     }).then(cart => {
       //check if the product we want to add is already in the cart, create one if it isn't. 

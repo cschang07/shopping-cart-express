@@ -55,6 +55,16 @@ let userController = {
       })
     }
   },
+  getUser: (req, res) => {
+    return User.findByPk(req.user.id)
+      .then(user => {
+        user = {
+          ...user.dataValues
+        };
+        delete user.password;
+        return res.json(user)
+      })
+  }
 }
 
 module.exports = userController
