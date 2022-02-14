@@ -41,7 +41,7 @@ const cartController = {
     });
   },
   addCartItem: (req, res) => {
-    CartItem.findByPk(req.params.id).then(cartItem => {
+    CartItem.findByPk(req.body.cartItemId).then(cartItem => {
       cartItem.update({
         quantity: cartItem.quantity + 1,
       })
@@ -51,7 +51,7 @@ const cartController = {
     })
   },
   subCartItem: (req, res) => {
-    CartItem.findByPk(req.params.id).then(cartItem => {
+    CartItem.findByPk(req.body.cartItemId).then(cartItem => {
       cartItem.update({
         quantity: cartItem.quantity - 1 >= 1 ? cartItem.quantity - 1 : 1,
       })
@@ -61,7 +61,7 @@ const cartController = {
     })
   },
   deleteCartItem: (req, res) => {
-    CartItem.findByPk(req.params.id).then(cartItem => {
+    CartItem.findByPk(req.body.cartItemId).then(cartItem => {
       cartItem.destroy()
         .then((cartItem) => {
           return res.json({ status: 'success', message: ' product deleted from cart successfully.' })
