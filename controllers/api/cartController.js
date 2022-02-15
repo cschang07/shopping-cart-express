@@ -35,7 +35,7 @@ const cartController = {
         cartItem[0].update({ quantity: (cartItem[0].dataValues.quantity || 0) + 1 })
       })
         .then((cartItem) => {
-          return res.json({ status: 'success', message: 'Product added to cart successfully.' })
+          return res.json({ status: 'success', message: '商品已新增' })
         })
       .catch(err => console.log(err))
     });
@@ -46,7 +46,7 @@ const cartController = {
         quantity: cartItem.quantity + 1,
       })
         .then((cartItem) => {
-          return res.json({ status: 'success', message: ' quantity of product + 1 successfully.' })
+          return res.json({ status: 'success', message: 'quantity of product + 1 successfully.' })
         })
     })
   },
