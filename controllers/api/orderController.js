@@ -12,7 +12,7 @@ let orderController = {
     })
   }, //for admin
   getOrder: (req, res) => {
-    Order.findAll({ where: { UserId: req.user.id } })
+    Order.findAll({ where: { UserId: req.user.id }, include:{ model: Product, as: 'items' } })
       .then(orders => {
         return res.json({ orders })
       })
