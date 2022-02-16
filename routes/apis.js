@@ -27,8 +27,8 @@ router.put('/cartItem/add', authenticated, cartController.addCartItem)
 router.put('/cartItem/sub', authenticated, cartController.subCartItem)
 router.put('/cartItem/del', authenticated, cartController.deleteCartItem)
 
-router.get('/orders', authenticated, orderController.getOrders) //for Admin
-router.get('/order', authenticated, orderController.getOrder)
+router.get('/orders', authenticated, orderController.getOrders) //for the admin to get all users' orders
+router.get('/order', authenticated, orderController.getOrder) //get the user's orders
 router.post('/order', authenticated, orderController.postOrder)
 router.post('/orders/:id/cancel', authenticated, orderController.cancelOrder)
 

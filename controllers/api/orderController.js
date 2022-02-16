@@ -27,6 +27,7 @@ let orderController = {
         shipping_status: req.body.shipping_status,
         payment_status: req.body.payment_status,
         amount: req.body.amount,
+        UserId: req.user.id // <-----here
       }).then(order => {
         let results = [];
         for (let i = 0; i < cart.items.length; i++) {
@@ -42,7 +43,7 @@ let orderController = {
         }
         return Promise.all(results)
           .then(() =>
-            res.json({ status: 'success', message: ' Order posted successfully.' })
+            res.json({ status: 'success', message: '訂單新增成功' })
           );
       })
     })
