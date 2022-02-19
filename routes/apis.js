@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
+const adminController = require('../controllers/api/adminController')
 const cartController = require('../controllers/api/cartController')
-const orderController = require('../controllers/api/orderController.js')
+const orderController = require('../controllers/api/orderController')
 const productController = require('../controllers/api/productController')
-const userController = require('../controllers/api/userController.js')
+const userController = require('../controllers/api/userController')
 const passport = require("../config/passport");
 
 const authenticated = passport.authenticate('jwt', { session: false })
@@ -38,5 +39,9 @@ router.get('/getuser', authenticated, userController.getUser)
 
 router.get('/order/:id/payment', authenticated, orderController.getPayment)
 router.post('/newebpay/callback', authenticated, orderController.newebpayCallback)
+
+router.get('/admin/products', authenticated, authenticatedAdmin, adminController.getProducts)
+router.get('/admin/product', authenticated, authenticatedAdmin, adminController.getProduct)
+router.put('/admin/product', authenticated, authenticatedAdmin, adminController.editProduct)
 
 module.exports = router
