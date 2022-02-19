@@ -10,7 +10,7 @@ module.exports = {
       name: faker.commerce.productName(),
       description: faker.commerce.product() + '/' + faker.commerce.productName(),
       price: faker.commerce.price(),
-      image: `https://loremflickr.com/320/240/product/?random=${Math.random() * 100}`,
+      image: `https://loremflickr.com/320/240/jeans/?random=${Math.random() * 100}`,
       createdAt: new Date(),
       updatedAt: new Date(),
     }))
