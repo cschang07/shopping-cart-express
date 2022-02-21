@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const passportJWT = require('passport-jwt')
 const db = require('../models')
 const ExtractJwt = passportJWT.ExtractJwt
+const FacebookStrategy = require('passport-facebook').Strategy
 const JwtStrategy = passportJWT.Strategy
 const User = db.User
 
@@ -11,7 +12,7 @@ let jwtOptions = {}
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
 jwtOptions.secretOrKey = process.env.JWT_SECRET
 
-let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
+let strategy_JWT = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
   User.findByPk(jwt_payload.id, {
     include: db.Order
     
@@ -35,6 +36,16 @@ passport.deserializeUser((id, cb) => {
   });
 })
 
-passport.use(strategy)
+let strategy_FACEBOOK = new FacebookStrategy({
+  clientID: process.env.FACEBOOK_ID,
+  clientSecret: process.env.FACEBOOK_SECRET,
+  callbackURL: process.env.FACEBOOK_CALLBACK,
+  profileFields: ['email', 'displayName']
+}, (accessToken, refreshToken, profile, done) => {
+  console.log(profile)
+})
+
+passport.use(strategy_JWT)
+passport.use(strategy_FACEBOOK)
 
 module.exports = passport
