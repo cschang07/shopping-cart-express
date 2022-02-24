@@ -8,8 +8,8 @@ router.get('/facebook', passport.authenticate('facebook', {
 }))
 
 router.get('/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: '/',
-  failureRedirect: '/users/login'
+  successRedirect: '/api/products',
+  failureRedirect: '/api/signin'
 }))
 
 module.exports = router
