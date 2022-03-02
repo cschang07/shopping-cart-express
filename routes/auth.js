@@ -4,7 +4,8 @@ const router = express.Router()
 const passport = require('passport')
 const userController = require('../controllers/api/userController')
 
-router.post('/auth/facebook', passport.authenticate('facebookToken', {session: false}), userController.facebookOAuth)
+router.post('/facebook', passport.authenticate('facebookToken', {session: false}), userController.facebookOAuth)
+
 // router.get('/facebook', passport.authenticate('facebook', {
 //   scope: ['email', 'public_profile']
 // }))

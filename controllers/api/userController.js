@@ -65,9 +65,13 @@ let userController = {
         return res.json(user)
       })
   },
-  // facebookOAuth: (req, res) => {
-  //   if (req.user.email !== null && req.)
-  // }
+  facebookOAuth: (req, res, next) => {
+    if (req.user.email !== null && req.user.id !== null) {
+      let email = req.user.email;
+      let fbid = req.user.facebookId;
+      res.status(200).json({emailId: email, facebookId: fbid})
+    }
+  }
 }
 
 module.exports = userController
