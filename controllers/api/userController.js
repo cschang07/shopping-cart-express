@@ -64,7 +64,10 @@ let userController = {
         delete user.password;
         return res.json(user)
       })
-  }
+  },
+  // facebookOAuth: (req, res) => {
+  //   if (req.user.email !== null && req.)
+  // }
 }
 
 module.exports = userController
