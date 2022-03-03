@@ -31,6 +31,14 @@ const productController = {
       .then(product => {
         return res.json(product.dataValues)
       })
+  },
+  searchProduct: (req, res) => {
+    return Product.findAll()
+      .then(products => {
+        const keyword = req.body.keyword
+        const targets = products.filter(product => product.dataValues.name.toLowerCase().includes(keyword.toLowerCase()) || product.dataValues.description.toLowerCase().includes(keyword.toLowerCase()))
+        return res.json(targets)
+      })
   }
 }
 

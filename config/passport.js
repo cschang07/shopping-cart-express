@@ -39,29 +39,36 @@ passport.deserializeUser((id, cb) => {
   });
 })
 
-// let strategy_FACEBOOK = new FacebookStrategy({
-//   clientID: process.env.FACEBOOK_ID,
-//   clientSecret: process.env.FACEBOOK_SECRET,
-//   callbackURL: process.env.FACEBOOK_CALLBACK,
-//   profileFields: ['email', 'displayName']
-// }, (accessToken, refreshToken, profile, done) => {
-//   const { name, email } = profile._json
-//   User.findOne({ email })
-//     .then(user => {
-//       if (user) return done(null, user)
-//       const randomPassword = Math.random().toString(36).slice(-8)
-//       bcrypt
-//         .genSalt(10)
-//         .then(salt => bcrypt.hash(randomPassword, salt))
-//         .then(hash => User.create({
-//           name,
-//           email,
-//           password: hash
-//         }))
-//         .then(user => done(null, user))
-//         .catch(err => done(err, false))
-//     })
-// })
+let strategy_FACEBOOK = new FacebookStrategy({
+  clientID: process.env.FACEBOOK_ID,
+  clientSecret: process.env.FACEBOOK_SECRET,
+  callbackURL: process.env.FACEBOOK_CALLBACK,
+  profileFields: ['email', 'displayName']
+}, (accessToken, refreshToken, profile, done) => {
+  console.log('inside facebook strategy')
+  //log to view the profile email
+  console.log(`profile email: ${profile.emails[0].value}`)
+  console.log(accessToken)
+  console.log(refreshToken)
+  console.log(profile)
+  
+  const { name, email } = profile._json
+  User.findOne({ email })
+    .then(user => {
+      if (user) return done(null, user)
+      const randomPassword = Math.random().toString(36).slice(-8)
+      bcrypt
+        .genSalt(10)
+        .then(salt => bcrypt.hash(randomPassword, salt))
+        .then(hash => User.create({
+          name,
+          email,
+          password: hash
+        }))
+        .then(user => done(null, user))
+        .catch(err => done(err, false))
+    })
+})
 
 passport.use('facebookToken', new FacebookTokenStrategy(
   {
@@ -72,6 +79,9 @@ passport.use('facebookToken', new FacebookTokenStrategy(
     console.log('inside facebook strategy')
     //log to view the profile email
     console.log(`profile email: ${profile.emails[0].value}`)
+    console.log(accessToken)
+    console.log(refreshToken)
+    console.log(profile)
 
     //check if there is a existing user in database either
     //with the user email or corresponding facebookid
@@ -104,6 +114,6 @@ passport.use('facebookToken', new FacebookTokenStrategy(
 ))
 
 passport.use(strategy_JWT)
-// passport.use(strategy_FACEBOOK)
+passport.use(strategy_FACEBOOK)
 
 module.exports = passport
