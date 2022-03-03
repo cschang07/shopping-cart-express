@@ -20,7 +20,7 @@ const authenticatedAdmin = (req, res, next) => {
 
 router.get('/products', productController.getProducts)
 router.get('/product/:id', productController.getProduct)
-router.get('/search/product', productController.searchProduct)
+router.post('/search/product', productController.searchProduct)
 
 router.get('/cart', authenticated, cartController.getCart)
 
