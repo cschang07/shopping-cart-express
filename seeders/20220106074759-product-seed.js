@@ -5,12 +5,12 @@ const faker = require('faker')
 module.exports = {
   up: async (queryInterface, Sequelize) => {
 
-    const mockProducts = Array.from({ length: 10 }).map((d, i) => ({
+    const mockProducts = Array.from({ length: 12 }).map((d, i) => ({
       id: i + 1,
-      name: faker.commerce.productName(),
+      name: `JEANS 00${i + 1}`,
       description: faker.commerce.product() + '/' + faker.commerce.productName(),
       price: faker.commerce.price(),
-      image: `https://loremflickr.com/320/240/jeans/?random=${Math.random() * 100}`,
+      image: `https://loremflickr.com/320/240/fashion/?random=${Math.random() * 100}`,
       createdAt: new Date(),
       updatedAt: new Date(),
     }))
