@@ -30,6 +30,7 @@ let orderController = {
         UserId: req.user.id // <-----here
       }).then(order => {
         let results = [];
+        console.log(cart.items)
         for (let i = 0; i < cart.items.length; i++) {
           console.log(order.id, cart.items[i].id)
           results.push(
