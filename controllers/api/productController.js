@@ -39,6 +39,20 @@ const productController = {
         const targets = products.filter(product => product.dataValues.name.toLowerCase().includes(keyword.toLowerCase()) || product.dataValues.description.toLowerCase().includes(keyword.toLowerCase()))
         return res.json(targets)
       })
+  },
+  editProduct: (req, res) => {
+    return Product.findByPk(req.body.id)
+      .then(product => {
+        product.update({
+          name: req.body.name,
+          description: req.body.description,
+          image: req.body.image,
+          price: req.body.price
+        })
+          .then(result => {
+            return res.json('Product edit successfully.')
+          })
+      })
   }
 }
 
