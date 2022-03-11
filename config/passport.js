@@ -1,9 +1,9 @@
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const User = db.User
 const Sequelize = require('sequelize')
 const db = require('../models')
+const User = db.User
 
 const FacebookStrategy = require('passport-facebook').Strategy
 const FacebookTokenStrategy = require('passport-facebook-token')
