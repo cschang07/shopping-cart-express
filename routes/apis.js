@@ -1,7 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const passport = require("../config/passport");
+
+//JWT
 const jwt = require('jsonwebtoken')
+
 
 const authenticated = passport.authenticate('jwt', { session: false })
 

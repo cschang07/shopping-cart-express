@@ -1,15 +1,16 @@
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const passportJWT = require('passport-jwt')
-const db = require('../models')
-const ExtractJwt = passportJWT.ExtractJwt
-const FacebookStrategy = require('passport-facebook').Strategy
-const JwtStrategy = passportJWT.Strategy
 const User = db.User
 const Sequelize = require('sequelize')
+const db = require('../models')
+
+const FacebookStrategy = require('passport-facebook').Strategy
 const FacebookTokenStrategy = require('passport-facebook-token')
 
+const passportJWT = require('passport-jwt')
+const ExtractJwt = passportJWT.ExtractJwt
+const JwtStrategy = passportJWT.Strategy
 
 let jwtOptions = {}
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
