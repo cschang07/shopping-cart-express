@@ -71,6 +71,15 @@ let userController = {
       let fbid = req.user.facebookId;
       res.status(200).json({emailId: email, facebookId: fbid})
     }
+  },
+  deleteUser: (req, res) => {
+    User.findByPk(req.body.id)
+    .then(user => {
+      user.destroy()
+        .then(result => {
+          return res.json("User deleted successfully.")
+        })
+    })
   }
 }
 

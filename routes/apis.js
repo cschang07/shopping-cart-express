@@ -58,6 +58,7 @@ router.get('/auth/facebook/callback',
     // return res.redirect('https://mingmoth.github.io/shop-forum/#/home')
   }
 )
+router.delete('/user/delete', userController.deleteUser)
 
 router.get('/order/:id/payment', authenticated, orderController.getPayment)
 router.post('/newebpay/callback', authenticated, orderController.newebpayCallback)
