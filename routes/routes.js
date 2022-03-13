@@ -20,7 +20,7 @@ router.get('/orders', orderController.getOrders)
 router.post('/order', orderController.postOrder)
 router.post('/orders/:id/cancel', orderController.cancelOrder)
 router.get('/order/:id/payment', orderController.getPayment)
-router.post('/newebpay/callback', orderController.newebpayCallback)
+router.post('/spgateway/callback', orderController.spgatewayCallback)
 
 // 匯出路由器
 module.exports = router

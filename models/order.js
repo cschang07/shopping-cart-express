@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.STRING,
     amount: DataTypes.INTEGER,
     serial_number: DataTypes.NUMBER,
+    sn: DataTypes.STRING,
     shipping_status: DataTypes.STRING,
     payment_status: DataTypes.STRING,
     UserId: DataTypes.INTEGER

@@ -61,7 +61,7 @@ router.get('/auth/facebook/callback',
 router.delete('/user/delete', userController.deleteUser)
 
 router.get('/order/:id/payment', authenticated, orderController.getPayment)
-router.post('/newebpay/callback', authenticated, orderController.newebpayCallback)
+router.post('/spgateway/callback', authenticated, orderController.spgatewayCallback)
 
 router.get('/admin/products', authenticated, authenticatedAdmin, adminController.getProducts)
 router.get('/admin/product/:id', authenticated, authenticatedAdmin, adminController.getProduct)
