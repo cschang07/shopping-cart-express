@@ -8,11 +8,10 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+    try {
+      await queryInterface.removeColumn('Orders', 'sn', {
+        type: Sequelize.STRING
+      })
+    } catch (e) { }
   }
 };
