@@ -62,20 +62,46 @@ let orderController = {
     })
   },
   getPayment: (req, res) => {
-    console.log('===== getPayment =====')
-    console.log(req.params.id)
-    console.log('==========')
-
-    return Order.findByPk(req.params.id, {}).then(order => {
-      return res.json({ order })
+    const MerchantOrderNo = req.params.id
+    return Order.findAll({
+      where: {
+        sn: MerchantOrderNo
+      },
+      include: [OrderItem]
     })
+      .then((order) => {
+        const data = order[0]
+        return res.json({ data })
+      })
   },
-  newebpayCallback: (req, res) => {
-    console.log('===== newebpayCallback =====')
+  spgatewayCallback: (req, res) => {
+    console.log('===== spgatewayCallback =====')
+    console.log(req.method)
+    console.log(req.query)
     console.log(req.body)
     console.log('==========')
 
-    return res.json({ status: 'success', message: '' })
+    const data = JSON.parse(helpers.create_mpg_aes_decrypt(req.body.TradeInfo))
+    console.log('===== spgatewayCallback: create_mpg_aes_decrypt、data =====')
+    console.log(data)
+    return Order.findAll({
+      where: {
+        sn: data.Result.MerchantOrderNo
+      }
+    })
+      .then((orders) => {
+        orders[0].update({
+          payment_status: 1
+        })
+          .then(order => {
+            CartItem.destroy({
+              where: { UserId: order.UserId }
+            })
+              .then(() => {
+                return res.redirect(`${process.env.BASE_URL}/#/checkout/success?sn=${data.Result.MerchantOrderNo}`)
+              })
+          })
+      })
   }
 }
 

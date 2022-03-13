@@ -15,7 +15,8 @@ const adminController = require('../controllers/api/adminController')
 const cartController = require('../controllers/api/cartController')
 const orderController = require('../controllers/api/orderController')
 const productController = require('../controllers/api/productController')
-const userController = require('../controllers/api/userController')
+const userController = require('../controllers/api/userController');
+const order = require('../models/order');
 
 const authenticatedAdmin = (req, res, next) => {
   if (req.user) {
@@ -42,6 +43,9 @@ router.get('/orders', authenticated, orderController.getOrders) //for the admin 
 router.get('/order', ensureLoggedIn, orderController.getOrder) //get the user's orders
 router.post('/order', authenticated, orderController.postOrder)
 router.post('/orders/:id/cancel', authenticated, orderController.cancelOrder)
+//spgateway payment related
+router.get('/order/payment/:id', authenticated, orderController.getPayment)
+router.post('/spgateway/callback', authenticated, orderController.spgatewayCallback)
 
 router.post('/signin', userController.signIn)
 router.post('/signup', userController.signUp)
@@ -59,9 +63,6 @@ router.get('/auth/facebook/callback',
   }
 )
 router.delete('/user/delete', userController.deleteUser)
-
-router.get('/order/:id/payment', authenticated, orderController.getPayment)
-router.post('/spgateway/callback', authenticated, orderController.spgatewayCallback)
 
 router.get('/admin/products', authenticated, authenticatedAdmin, adminController.getProducts)
 router.get('/admin/product/:id', authenticated, authenticatedAdmin, adminController.getProduct)
