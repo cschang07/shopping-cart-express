@@ -10,7 +10,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     try {
       await queryInterface.removeColumn('Orders', 'sn', {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       })
     } catch (e) { }
   }

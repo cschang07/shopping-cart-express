@@ -18,6 +18,7 @@ let orderController = {
       })
   },
   postOrder: (req, res) => {
+    const tradeInfo = helpers.getTradeInfo(amount, 'jeans', email)
     return Cart.findByPk(req.body.cartId, { include: 'items' }).then(cart => {
       console.log(cart)
       return Order.create({
@@ -27,7 +28,8 @@ let orderController = {
         shipping_status: req.body.shipping_status,
         payment_status: req.body.payment_status,
         amount: req.body.amount,
-        UserId: req.user.id // <-----here
+        UserId: req.user.id,
+        sn: String(tradeInfo.MerchantOrderNo)
       }).then(order => {
         let results = [];
         console.log(cart.items)
@@ -44,7 +46,7 @@ let orderController = {
         }
         return Promise.all(results)
           .then(() =>
-            res.json({ status: 'success', message: '訂單新增成功' })
+            res.json({ status: 'success', message: '訂單新增成功' , tradeInfo: tradeInfo})
           );
       })
     })
