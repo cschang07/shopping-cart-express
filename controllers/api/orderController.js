@@ -3,6 +3,7 @@ const Cart = db.Cart
 const Order = db.Order
 const OrderItem = db.OrderItem
 const Product = db.Product
+const helpers = require('../../helpers')
 
 
 let orderController = {
