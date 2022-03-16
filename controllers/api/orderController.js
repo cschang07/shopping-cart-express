@@ -18,7 +18,7 @@ let orderController = {
       })
   },
   postOrder: (req, res) => {
-    const { name, address, phone, shipping_status, payment_status, amount } = req.body
+    const { name, address, phone, shipping_status, payment_status, amount, email } = req.body
     const tradeInfo = helpers.getTradeInfo(amount, 'jeans', email)
     return Cart.findByPk(req.body.cartId, { include: 'items' }).then(cart => {
       console.log(cart)
