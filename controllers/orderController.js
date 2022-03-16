@@ -14,14 +14,15 @@ let orderController = {
     })
   },
   postOrder: (req, res) => {
+    const {name, address, phone, shipping_status, payment_status, amount} = req.body
     return Cart.findByPk(req.body.cartId, { include: 'items' }).then(cart => {
       return Order.create({
-        name: req.body.name,
-        address: req.body.address,
-        phone: req.body.phone,
-        shipping_status: req.body.shipping_status,
-        payment_status: req.body.payment_status,
-        amount: req.body.amount,
+        name,
+        address,
+        phone,
+        shipping_status,
+        payment_status,
+        amount
       }).then(order => {
         let results = [];
         for (let i = 0; i < cart.items.length; i++) {

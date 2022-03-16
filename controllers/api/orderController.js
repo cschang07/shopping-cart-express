@@ -18,16 +18,17 @@ let orderController = {
       })
   },
   postOrder: (req, res) => {
+    const { name, address, phone, shipping_status, payment_status, amount } = req.body
     const tradeInfo = helpers.getTradeInfo(amount, 'jeans', email)
     return Cart.findByPk(req.body.cartId, { include: 'items' }).then(cart => {
       console.log(cart)
       return Order.create({
-        name: req.body.name,
-        address: req.body.address,
-        phone: req.body.phone,
-        shipping_status: req.body.shipping_status,
-        payment_status: req.body.payment_status,
-        amount: req.body.amount,
+        name,
+        address,
+        phone,
+        shipping_status,
+        payment_status,
+        amount,
         UserId: req.user.id,
         sn: String(tradeInfo.MerchantOrderNo)
       }).then(order => {
