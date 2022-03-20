@@ -52,9 +52,9 @@ both user and administrator seed accounts are provided, shown in the table below
 
 | Role | User account | Password |
 | ----------- | ----------- | ----------- |
-| User | user1 | 1 |
-| User | user2 | 2 |
-| User | user3 | 3 |
-| User | user4 | 4 |
-| User | user5 | 5 |
-| Admin | root | 12345678 |
+| User | user1@example.com | 1 |
+| User | user2@example.com | 2 |
+| User | user3@example.com | 3 |
+| User | user4@example.com | 4 |
+| User | user5@example.com | 5 |
+| Admin | root@example.com | 12345678 |
